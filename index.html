@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen Sumatif SKI Kelas 12 - MA Mu'allimin NU</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        nu: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            dark: '#0a381e'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styles for Printing and Drag/Select fixes */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printable-card, #printable-card * {
+                visibility: visible;
+            }
+            #printable-card {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+                box-shadow: none !important;
+                border: 2px solid #000 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+        .matching-line {
+            pointer-events: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-nu-600 selection:text-white">
+
+    <!-- Top Navigation / Header Bar -->
+    <header class="bg-nu-900 text-white shadow-lg sticky top-0 z-40 border-b-4 border-emerald-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-white rounded-full p-1 flex items-center justify-center shadow-md overflow-hidden" id="header-logo-container">
+                    <img id="app-logo" src="https://placehold.co/100x100/166534/ffffff?text=MA+NU" alt="Logo MA Mu'allimin NU" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold tracking-wide leading-tight">MA MU'ALLIMIN NU</h1>
+                    <p class="text-xs sm:text-sm text-emerald-200 font-medium">Asesmen Sumatif SKI - Kelas 12</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div id="user-badge" class="hidden sm:flex items-center space-x-2 bg-nu-800/80 px-3 py-1.5 rounded-lg border border-emerald-600/50 text-xs">
+                    <i class="fa-solid fa-user-circle text-emerald-300 text-sm"></i>
+                    <span id="user-badge-name" class="font-semibold text-emerald-100">Siswa</span>
+                </div>
+                <button id="btn-logout" onclick="logout()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow flex items-center space-x-1">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="hidden sm:inline">Keluar</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- View 1: Auth Screen (Login / Register) -->
+        <section id="view-auth" class="max-w-md mx-auto my-6">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100">
+                <div class="bg-gradient-to-br from-nu-800 to-nu-900 p-6 text-white text-center relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl"></div>
+                    <img id="login-card-logo" src="https://placehold.co/100x100/166534/ffffff?text=MA+NU" class="w-20 h-20 mx-auto mb-3 bg-white p-1 rounded-full shadow-lg object-contain">
+                    <h2 class="text-xl font-bold">ASESMEN SUMATIF SKI</h2>
+                    <p class="text-xs text-emerald-200 mt-1">Sejarah Kebudayaan Islam - Kelas 12 MA</p>
+                    <p class="text-xs font-semibold text-amber-300 mt-2 bg-black/20 py-1 px-3 rounded-full inline-block">Penyusun: Lilik Maziyah, S.Ag.</p>
+                </div>
+
+                <!-- Tabs Admin vs Siswa -->
+                <div class="flex border-b border-slate-200 bg-slate-50">
+                    <button id="tab-btn-siswa" onclick="switchAuthTab('siswa')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-nu-700 text-nu-800 bg-white transition">
+                        <i class="fa-solid fa-user-graduate mr-1"></i> Akses Siswa
+                    </button>
+                    <button id="tab-btn-admin" onclick="switchAuthTab('admin')" class="flex-1 py-3 text-center text-sm font-bold text-slate-500 hover:text-slate-700 transition">
+                        <i class="fa-solid fa-user-shield mr-1"></i> Akses Guru / Admin
+                    </button>
+                </div>
+
+                <!-- Form Siswa -->
+                <form id="form-login-siswa" onsubmit="handleSiswaLogin(event)" class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nama Lengkap Siswa</label>
+                        <input type="text" id="siswa-nama" required placeholder="Contoh: Ahmad Abdullah" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-nu-600 focus:border-nu-600 outline-none text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Kelas</label>
+                        <select id="siswa-kelas" required class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-nu-600 focus:border-nu-600 outline-none text-sm transition">
+                            <option value="">-- Pilih Kelas --</option>
+                            <option value="12 MIPA 1">12 MIPA 1</option>
+                            <option value="12 MIPA 2">12 MIPA 2</option>
+                            <option value="12 IPS 1">12 IPS 1</option>
+                            <option value="12 IPS 2">12 IPS 2</option>
+                            <option value="12 Keagamaan">12 Keagamaan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Nomor Presensi (Password)</label>
+                        <input type="number" id="siswa-presensi" min="1" max="50" required placeholder="Contoh: 14" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-nu-600 focus:border-nu-600 outline-none text-sm transition">
+                    </div>
+                    
+                    <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r text-xs text-amber-800">
+                        <p class="font-semibold"><i class="fa-solid fa-circle-info mr-1"></i> Ketentuan Ujian:</p>
+                        <ul class="list-disc list-inside mt-1 space-y-0.5">
+                            <li>Waktu pengerjaan: <strong>90 Menit</strong></li>
+                            <li>Total: <strong>40 Soal</strong> (20 PG, 10 PG Kompleks, 10 Menjodohkan)</li>
+                            <li>Batas Kesempatan Mengerjakan: <strong>Maksimal 2 Kali</strong></li>
+                            <li>KKM: <strong>78</strong></li>
+                        </ul>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 bg-nu-700 hover:bg-nu-800 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition transform active:scale-[0.99] flex justify-center items-center space-x-2">
+                        <span>Masuk & Mulai Asesmen</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- Form Admin -->
+                <form id="form-login-admin" onsubmit="handleAdminLogin(event)" class="p-6 space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Username Admin / Guru</label>
+                        <input type="text" id="admin-user" required placeholder="admin" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-nu-600 focus:border-nu-600 outline-none text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Password</label>
+                        <input type="password" id="admin-pass" required placeholder="••••••••" class="w-full px-3 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-nu-600 focus:border-nu-600 outline-none text-sm transition">
+                    </div>
+                    <p class="text-xs text-slate-500">Default Admin Username: <code class="bg-slate-200 px-1 py-0.5 rounded text-nu-900 font-mono">admin</code> | Password: <code class="bg-slate-200 px-1 py-0.5 rounded text-nu-900 font-mono">admin123</code></p>
+
+                    <button type="submit" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg shadow-lg transition flex justify-center items-center space-x-2">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Masuk Mode Admin</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- View 2: Student Pre-exam Dashboard -->
+        <section id="view-student-intro" class="hidden max-w-2xl mx-auto space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-100">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full uppercase tracking-wider">Identitas Peserta</span>
+                        <h2 id="intro-student-name" class="text-xl font-extrabold text-slate-800 mt-1">Nama Siswa</h2>
+                        <p id="intro-student-info" class="text-sm text-slate-600">Kelas 12 | No Presensi: 0</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-500 block">Sisa Kesempatan</span>
+                        <span id="intro-attempts-badge" class="text-lg font-black text-nu-700 bg-nu-50 px-3 py-1 rounded-lg border border-nu-200">2 / 2</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4 text-sm text-slate-700">
+                    <h3 class="font-bold text-slate-900 flex items-center text-base">
+                        <i class="fa-solid fa-clipboard-list text-nu-700 mr-2"></i> Petunjuk Pengerjaan Soal:
+                    </h3>
+                    <ul class="space-y-2 list-disc list-inside bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <li>Soal terdiri dari <strong>40 nomor</strong>:
+                            <ul class="pl-6 list-circle text-xs text-slate-600 mt-1 space-y-1">
+                                <li><strong>Nomor 1 - 20:</strong> Pilihan Ganda Biasa (Pilih 1 jawaban A, B, C, D).</li>
+                                <li><strong>Nomor 21 - 30:</strong> Pilihan Ganda Kompleks (Centang semua jawaban yang benar, jawaban benar lebih dari 1).</li>
+                                <li><strong>Nomor 31 - 40:</strong> Menjodohkan (Pilih pasangan yang tepat antara kolom kiri dan kanan).</li>
+                            </ul>
+                        </li>
+                        <li>Durasi waktu pengerjaan adalah <strong>90 Menit</strong>. Waktu berjalan otomatis setelah tombol dibuka.</li>
+                        <li>Nilai Kriteria Ketuntasan Minimal (KKM) adalah <strong>78</strong>.</li>
+                        <li>Siswa diberi kesempatan maksimal <strong>2 kali</strong> mengerjakan. Skor terbaik/terakhir akan tersimpan.</li>
+                        <li>Harap diperiksa kembali jawaban sebelum menekan tombol "Selesai & Kirim".</li>
+                    </ul>
+                </div>
+
+                <div id="intro-action-container" class="mt-6 pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <button onclick="logout()" class="w-full sm:w-auto px-4 py-2.5 text-slate-600 hover:text-slate-900 font-semibold text-sm">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+                    </button>
+                    <button id="btn-start-exam" onclick="startExam()" class="w-full sm:w-auto px-8 py-3 bg-nu-700 hover:bg-nu-800 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Mulai Mengerjakan Asesmen</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 3: Active Exam View -->
+        <section id="view-exam" class="hidden grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Left/Top Question Area (3 Cols) -->
+            <div class="lg:col-span-3 space-y-4">
+                <!-- Top Info Bar -->
+                <div class="bg-white rounded-xl p-4 shadow-md border border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                    <div class="flex items-center space-x-2">
+                        <span id="exam-q-type-badge" class="bg-nu-100 text-nu-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Pilihan Ganda</span>
+                        <span class="text-xs font-bold text-slate-500">Soal No. <span id="exam-q-number" class="text-base text-slate-900 font-black">1</span> / 40</span>
+                    </div>
+
+                    <!-- Timer Badge -->
+                    <div class="flex items-center space-x-2 bg-slate-900 text-white px-4 py-1.5 rounded-lg font-mono text-sm shadow">
+                        <i class="fa-regular fa-clock text-amber-400"></i>
+                        <span>Sisa Waktu:</span>
+                        <span id="exam-timer" class="font-bold text-amber-400 text-base">90:00</span>
+                    </div>
+                </div>
+
+                <!-- Main Question Box -->
+                <div class="bg-white rounded-2xl p-6 shadow-xl border border-slate-200 min-h-[400px] flex flex-col justify-between">
+                    <div id="question-container" class="space-y-6">
+                        <!-- Dynamic Question Content Inserted Here -->
+                    </div>
+
+                    <!-- Navigation Controls Bottom -->
+                    <div class="pt-6 border-t border-slate-200 flex flex-wrap justify-between items-center gap-3">
+                        <button id="btn-prev-q" onclick="navigateQuestion(-1)" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-lg text-sm transition flex items-center space-x-2">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            <span>Sebelumnya</span>
+                        </button>
+
+                        <button id="btn-flag-q" onclick="toggleFlagCurrentQuestion()" class="px-4 py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 font-semibold rounded-lg text-sm transition flex items-center space-x-1.5">
+                            <i class="fa-regular fa-bookmark"></i>
+                            <span id="flag-text">Ragu-Ragu</span>
+                        </button>
+
+                        <button id="btn-next-q" onclick="navigateQuestion(1)" class="px-6 py-2.5 bg-nu-700 hover:bg-nu-800 text-white font-bold rounded-lg text-sm transition shadow flex items-center space-x-2">
+                            <span>Berikutnya</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar: Question Grid Navigation -->
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl p-5 shadow-xl border border-slate-200 sticky top-20">
+                    <h3 class="font-bold text-slate-800 text-sm mb-3 flex items-center justify-between">
+                        <span><i class="fa-solid fa-grip mr-2 text-nu-700"></i> Navigasi Soal</span>
+                        <span id="answered-count-badge" class="text-xs bg-nu-100 text-nu-800 px-2 py-0.5 rounded-full">0/40 Dijawab</span>
+                    </h3>
+
+                    <!-- Color Legend -->
+                    <div class="grid grid-cols-3 gap-1 text-[10px] text-slate-600 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                        <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-nu-600 rounded"></span><span>Dijawab</span></div>
+                        <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-amber-400 rounded"></span><span>Ragu</span></div>
+                        <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-slate-200 rounded"></span><span>Belum</span></div>
+                    </div>
+
+                    <!-- Grid Buttons -->
+                    <div id="question-grid" class="grid grid-cols-5 gap-2 max-h-[320px] overflow-y-auto custom-scrollbar p-1">
+                        <!-- 40 Question Grid Buttons generated dynamically -->
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-200">
+                        <button onclick="confirmSubmitExam()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Selesai & Kirim Jawaban</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 4: Student Exam Result View -->
+        <section id="view-result" class="hidden max-w-3xl mx-auto space-y-6">
+            <div id="printable-card" class="bg-white rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-200 relative overflow-hidden">
+                <!-- Card Header -->
+                <div class="flex justify-between items-start border-b-2 border-slate-800 pb-4 mb-6">
+                    <div class="flex items-center space-x-4">
+                        <img id="result-card-logo" src="https://placehold.co/100x100/166534/ffffff?text=MA+NU" class="w-16 h-16 object-contain">
+                        <div>
+                            <h2 class="text-xl font-extrabold text-slate-900 tracking-tight">MA MU'ALLIMIN NU</h2>
+                            <p class="text-xs font-semibold text-slate-600">HASIL ASESMEN SUMATIF SEJARAH KEBUDAYAAN ISLAM (SKI)</p>
+                            <p class="text-xs text-slate-500">Tahun Ajaran 2026/2027 • Pengampu: Lilik Maziyah, S.Ag.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span id="result-status-stamp" class="inline-block px-3 py-1 rounded font-black text-xs uppercase tracking-wider border">LULUS</span>
+                    </div>
+                </div>
+
+                <!-- Student Identity Info -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs mb-6">
+                    <div>
+                        <span class="text-slate-500 block">Nama Siswa:</span>
+                        <strong id="result-student-name" class="text-sm text-slate-900">Ahmad Abdullah</strong>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block">Kelas:</span>
+                        <strong id="result-student-kelas" class="text-sm text-slate-900">12 MIPA 1</strong>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block">No. Presensi:</span>
+                        <strong id="result-student-presensi" class="text-sm text-slate-900">14</strong>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block">Waktu Mengerjakan:</span>
+                        <strong id="result-time-taken" class="text-slate-800">45 Menit</strong>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block">Tanggal Asesmen:</span>
+                        <strong id="result-date" class="text-slate-800">28 Sep 2026</strong>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 block">KKM Terpilih:</span>
+                        <strong class="text-slate-800">78</strong>
+                    </div>
+                </div>
+
+                <!-- Big Score Showcase -->
+                <div class="text-center py-6 bg-gradient-to-br from-slate-900 to-nu-900 text-white rounded-2xl shadow-inner mb-6 relative">
+                    <p class="text-xs uppercase font-bold text-emerald-300 tracking-widest mb-1">SKOR AKHIR</p>
+                    <div id="result-final-score" class="text-6xl font-black text-amber-400 font-mono tracking-tight">85</div>
+                    <p id="result-kkm-note" class="text-xs text-slate-200 mt-2 font-medium">Selamat! Anda telah melampaui KKM (78)</p>
+                </div>
+
+                <!-- Score Breakdown -->
+                <div class="grid grid-cols-3 gap-3 text-center text-xs mb-6">
+                    <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
+                        <span class="text-slate-600 block">Pilihan Ganda (20)</span>
+                        <strong id="breakdown-pg" class="text-lg text-emerald-700 font-bold">18 Benar</strong>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl">
+                        <span class="text-slate-600 block">PG Kompleks (10)</span>
+                        <strong id="breakdown-pgk" class="text-lg text-blue-700 font-bold">8 Sesuai</strong>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 p-3 rounded-xl">
+                        <span class="text-slate-600 block">Menjodohkan (10)</span>
+                        <strong id="breakdown-match" class="text-lg text-purple-700 font-bold">9 Cocok</strong>
+                    </div>
+                </div>
+
+                <!-- Signature & Watermark Footer -->
+                <div class="flex justify-between items-end pt-6 border-t border-slate-200 text-xs text-slate-600">
+                    <div>
+                        <p class="font-semibold text-slate-800">MA Mu'allimin NU</p>
+                        <p class="text-[10px] text-slate-400">Dicetak secara digital oleh sistem</p>
+                    </div>
+                    <div class="text-center">
+                        <p>Guru Pengampu SKI,</p>
+                        <div class="h-12 flex items-center justify-center italic text-slate-400 font-serif">Lilik Maziyah</div>
+                        <p class="font-bold text-slate-800 underline">Lilik Maziyah, S.Ag.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons for Download / Try Again -->
+            <div class="no-print flex flex-wrap justify-between items-center gap-3">
+                <button onclick="logout()" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl text-sm transition">
+                    <i class="fa-solid fa-house mr-1"></i> Kembali ke Beranda
+                </button>
+                <div class="flex space-x-2">
+                    <button id="btn-result-retry" onclick="retryExam()" class="px-5 py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-sm transition shadow">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Mengerjakan Lagi (<span id="retry-count">1</span>/2)
+                    </button>
+                    <button onclick="window.print()" class="px-6 py-2.5 bg-nu-800 hover:bg-nu-900 text-white font-extrabold rounded-xl text-sm transition shadow-lg flex items-center space-x-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak / Download Kartu Hasil</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 5: Admin Panel View -->
+        <section id="view-admin" class="hidden space-y-6">
+            <!-- Admin Header Nav -->
+            <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <span class="text-xs bg-emerald-500 text-slate-950 font-black px-2.5 py-0.5 rounded uppercase tracking-wider">Panel Administrator</span>
+                    <h2 class="text-2xl font-extrabold mt-1">Pengelolaan Asesmen SKI Kelas 12</h2>
+                    <p class="text-xs text-slate-400">Pengampu: Lilik Maziyah, S.Ag. | MA Mu'allimin NU</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="startAdminTestExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg transition shadow flex items-center space-x-1.5">
+                        <i class="fa-solid fa-vial"></i>
+                        <span>Uji Coba Soal (Mode Siswa)</span>
+                    </button>
+                    <button onclick="openAdminSettingsModal()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-lg transition shadow flex items-center space-x-1.5">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Pengaturan & Logo</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="flex border-b border-slate-200 bg-white rounded-t-xl px-4 pt-2 shadow">
+                <button id="admin-tab-btn-questions" onclick="switchAdminTab('questions')" class="py-3 px-5 text-sm font-bold border-b-2 border-nu-700 text-nu-800 transition">
+                    <i class="fa-solid fa-list-check mr-2"></i> Bank Soal (40 Soal)
+                </button>
+                <button id="admin-tab-btn-scores" onclick="switchAdminTab('scores')" class="py-3 px-5 text-sm font-bold text-slate-500 hover:text-slate-800 transition">
+                    <i class="fa-solid fa-square-poll-vertical mr-2"></i> Rekap Nilai Siswa
+                </button>
+            </div>
+
+            <!-- Admin Tab 1: Question Bank Manager -->
+            <div id="admin-tab-questions" class="bg-white rounded-b-xl p-6 shadow-xl space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">Daftar Soal Asesmen</h3>
+                        <p class="text-xs text-slate-500">Edit pertanyaan, kunci jawaban, dan pilihan untuk 40 soal.</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <select id="filter-question-type" onchange="renderAdminQuestionList()" class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold">
+                            <option value="ALL">Semua Jenis Soal (40)</option>
+                            <option value="PG">1. Pilihan Ganda (1-20)</option>
+                            <option value="PGK">2. PG Kompleks (21-30)</option>
+                            <option value="MATCH">3. Menjodohkan (31-40)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="admin-question-list" class="space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar pr-2">
+                    <!-- Dynamic Questions Editing Cards -->
+                </div>
+            </div>
+
+            <!-- Admin Tab 2: Student Scores Summary Table -->
+            <div id="admin-tab-scores" class="bg-white rounded-b-xl p-6 shadow-xl space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800">Daftar Nilai Siswa</h3>
+                        <p class="text-xs text-slate-500">Hasil pengerjaan siswa terdaftar secara otomatis.</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="downloadScoresCSV()" class="px-4 py-2 bg-nu-700 hover:bg-nu-800 text-white text-xs font-bold rounded-lg transition shadow flex items-center space-x-1.5">
+                            <i class="fa-solid fa-file-csv"></i>
+                            <span>Export Rekap CSV / Excel</span>
+                        </button>
+                        <button onclick="clearAllScores()" class="px-3 py-2 bg-rose-100 text-rose-700 hover:bg-rose-200 text-xs font-bold rounded-lg transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="w-full text-left text-xs text-slate-700">
+                        <thead class="bg-slate-100 text-slate-900 uppercase font-bold text-[11px] border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">No</th>
+                                <th class="p-3">Nama Siswa</th>
+                                <th class="p-3">Kelas</th>
+                                <th class="p-3">No. Presensi</th>
+                                <th class="p-3">Percobaan Ke-</th>
+                                <th class="p-3">Nilai Akhir</th>
+                                <th class="p-3">Status KKM (78)</th>
+                                <th class="p-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-scores-tbody" class="divide-y divide-slate-200">
+                            <!-- Dynamic Score rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Edit Question -->
+    <div id="modal-edit-question" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto custom-scrollbar">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4">
+                <h3 class="font-bold text-slate-900 text-base">Edit Soal No. <span id="edit-q-num">1</span></h3>
+                <button onclick="closeEditQuestionModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form id="form-edit-question" onsubmit="saveQuestionEdit(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="edit-q-id">
+                
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Teks Pertanyaan / Kasus</label>
+                    <textarea id="edit-q-text" rows="4" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-nu-600 text-xs"></textarea>
+                </div>
+
+                <!-- Dynamic Form Fields based on Type -->
+                <div id="edit-options-container" class="space-y-3">
+                    <!-- Options or Pairs injected dynamically -->
+                </div>
+
+                <div class="pt-4 border-t border-slate-200 flex justify-end space-x-2">
+                    <button type="button" onclick="closeEditQuestionModal()" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-lg">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-nu-700 text-white font-bold rounded-lg shadow">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Admin Settings (Change Password & Logo) -->
+    <div id="modal-admin-settings" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-5">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="font-bold text-slate-900 text-base"><i class="fa-solid fa-sliders text-nu-700 mr-2"></i> Pengaturan Aplikasi</h3>
+                <button onclick="closeAdminSettingsModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Ganti Password Admin -->
+            <form onsubmit="saveAdminPassword(event)" class="space-y-3 border-b border-slate-200 pb-4">
+                <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wider">Ubah Password Admin</h4>
+                <div>
+                    <label class="block text-[11px] text-slate-600 mb-1">Password Baru</label>
+                    <input type="password" id="setting-new-pass" required placeholder="Masukkan password baru" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
+                </div>
+                <button type="submit" class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-lg">Update Password</button>
+            </form>
+
+            <!-- Ganti Logo Sekolah -->
+            <form onsubmit="saveLogoSetting(event)" class="space-y-3">
+                <h4 class="font-bold text-xs text-slate-800 uppercase tracking-wider">Ubah Logo Lembaga</h4>
+                <div>
+                    <label class="block text-[11px] text-slate-600 mb-1">URL Logo (Image Link)</label>
+                    <input type="url" id="setting-logo-url" required placeholder="https://..." class="w-full p-2 border border-slate-300 rounded-lg text-xs">
+                </div>
+                <div class="flex space-x-2">
+                    <button type="button" onclick="setPresetLogo('MA NU')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-[10px] font-semibold text-slate-700">Preset Logo MA NU</button>
+                    <button type="button" onclick="setPresetLogo('Kemenag')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded text-[10px] font-semibold text-slate-700">Preset Kemenag</button>
+                </div>
+                <button type="submit" class="w-full py-2 bg-nu-700 hover:bg-nu-800 text-white font-bold text-xs rounded-lg">Simpan Logo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+    <footer class="bg-slate-900 text-slate-400 text-xs py-4 text-center border-t border-slate-800 mt-12 no-print">
+        <p>&copy; 2026 MA Mu'allimin NU. Asesmen Sumatif SKI Kelas 12.</p>
+        <p class="text-[11px] text-slate-500 mt-0.5">Disusun Oleh: <strong>Lilik Maziyah, S.Ag.</strong></p>
+    </footer>
+
+    <script>
+        
+        // Default Master Questions (40 Contextual SKI Questions)
+        const DEFAULT_QUESTIONS = [
+            // --- SECTION 1: 20 PILIHAN GANDA (1 - 20) ---
+            {
+                id: 1,
+                type: 'PG',
+                question: "Seorang peneliti sejarah menemukan nisan makam kuno di Barus, Sumatera Utara, yang bertarikh 48 H (670 M). Bukti arkeologis ini memperkuat penafsiran bahwa Islam telah masuk ke Nusantara sejak abad ke-7 Masehi secara langsung dari Jazirah Arab. Teori yang didukung oleh bukti sejarah tersebut adalah...",
+                options: [
+                    "Teori Gujarat",
+                    "Teori Makkah (Arab)",
+                    "Teori Persia",
+                    "Teori Cina"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 2,
+                type: 'PG',
+                question: "Prof. Dr. Hamka (Buya Hamka) menolak pandangan Pijnappel dan Snouck Hurgronje tentang masuknya Islam ke Indonesia. Alasan utama Hamka menolak Teori Gujarat adalah...",
+                options: [
+                    "Peran bangsa Arab yang sangat dominan dalam perdagangan jalur sutra lautan sejak abad pertama Hijriah",
+                    "Adanya kesamaan mazhab Syafi'i yang dianut mayoritas masyarakat Samudera Pasai dan Makkah",
+                    "Ditemukannya catatan perjalanan Marco Polo di Pulau Sumatra tahun 1292",
+                    "Adanya tradisi peringatan 10 Muharram atau Tabuik di Minangkabau"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 3,
+                type: 'PG',
+                question: "Di Jawa Barat dan Sumatra Barat terdapat tradisi merayakan 10 Muharram (Hari Asyura) dengan membuat Bubur Suro atau upacara Tabuik. Tradisi seni dan budaya ini sering dikaitkan sebagai bukti sejarah masuknya Islam melalui...",
+                options: [
+                    "Teori Gujarat oleh pedagang Cambay",
+                    "Teori Makkah oleh para musafir Arab",
+                    "Teori Persia oleh para pedagang Syi'ah dari Iran",
+                    "Teori Cina oleh utusan Dinasti Tang"
+                ],
+                answer: 2 // C
+            },
+            {
+                id: 4,
+                type: 'PG',
+                question: "Keberadaan permukiman Muslim Cina di kawasan pesisir utara Jawa seperti Gresik, Surabaya, dan Tuban pada abad ke-15 Masehi dicatat dalam berita perjalanan pengembara Tiongkok bernama Ma Huan (kitab Yingya Shenglan). Hal ini memperkuat pendukung Teori...",
+                options: [
+                    "Persia oleh Hoesein Djajadiningrat",
+                    "Cina oleh Slamet Muljana dan Sumanto Al Qurtuby",
+                    "Gujarat oleh Snouck Hurgronje",
+                    "Arab oleh Anthony H. Johns"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 5,
+                type: 'PG',
+                question: "Makam Fatimah binti Maimun di Leran, Gresik, Jawa Timur yang berangka tahun 475 H (1082 M) memiliki insiprah kaligrafi Arab gaya Kufi. Keberadaan makam ini membuktikan bahwa...",
+                options: [
+                    "Kerajaan Demak telah berdiri sejak abad ke-11 Masehi",
+                    "Masyarakat pesisir Jawa utara telah berinteraksi dengan pemeluk Islam pada abad ke-11 Masehi",
+                    "Walisongo telah melakukan dakwah secara terorganisir di Gresik sejak abad ke-11",
+                    "Kerajaan Majapahit telah resmi menjadi kerajaan Islam pada masa Raden Wijaya"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 6,
+                type: 'PG',
+                question: "Sunan Gresik (Maulana Malik Ibrahim) mengawali dakwahnya di pesisir utara Jawa dengan pendekatan sosial-ekonomi yang sangat humanis. Strategi awal yang diterapkan beliau untuk menarik simpati masyarakat Hindu-Buddha saat itu adalah...",
+                options: [
+                    "Mendirikan pasukan tentara kerajaan untuk mendesak penguasa lokal",
+                    "Membuka warung kebutuhan pokok murah serta mengobati masyarakat secara gratis",
+                    "Mengubah struktur kasta masyarakat secara mendadak",
+                    "Melarang semua seni budaya lokal yang bertentangan dengan Islam"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 7,
+                type: 'PG',
+                question: "Sunan Ampel mengenalkan prinsip ajaran moral yang sangat terkenal di kalangan masyarakat Jawa untuk membentengi akhlak masyarakat dari kebiasaan buruk, yang dikenal dengan sebutan 'Molimo'. Salah satu isi ajaran Molimo yaitu 'Moh Madat' artinya...",
+                options: [
+                    "Tidak mau mencuri atau mengambil hak orang lain",
+                    "Tidak mau mengonsumsi candu, ganja, atau obat terlarang",
+                    "Tidak mau berjudi atau mempertaruhkan harta",
+                    "Tidak mau berbuat zina atau berselingkuh"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 8,
+                type: 'PG',
+                question: "Sunan Bonang memanfaatkan media kesenian tradisional Jawa seperti Gamelan dan Tembang Durma untuk sarana dakwah Islam. Karya sastra peninggalan Sunan Bonang yang berisi ajaran tasawuf dalam bentuk tembang suluk adalah...",
+                options: [
+                    "Suluk Wijil dan Tembang Tombo Ati",
+                    "Kitab Musarar dan Babad Tanah Jawi",
+                    "Serat Centhini dan Serat Kalatidha",
+                    "Tembang Kinanthi dan Sinom"
+                ],
+                answer: 0 // A
+            },
+            {
+                id: 9,
+                type: 'PG',
+                question: "Sunan Drajat (Raden Qasim) dikenal sangat dermawan dan memiliki kepedulian sosial yang amat tinggi terhadap fakir miskin dan anak yatim. Salah satu ajaran terkenal beliau dalam bahasa Jawa yaitu 'Wenehana mangan marang wong kang luwe', yang mengandung pesan...",
+                options: [
+                    "Berikanlah pakaian kepada orang yang bertelanjang",
+                    "Berikanlah makanan kepada orang yang kelaparan",
+                    "Berikanlah payung kepada orang yang kehujanan",
+                    "Berikanlah tongkat kepada orang yang buta"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 10,
+                type: 'PG',
+                question: "Sunan Kudus dalam merayakan Hari Raya Idul Adha melarang pengikutnya menyembelih hewan Sapi dan menggantinya dengan Kerbau. Alasan filosofis toleransi budaya dari kebijakan Sunan Kudus ini adalah...",
+                options: [
+                    "Daging sapi pada masa itu memiliki harga yang terlalu mahal bagi masyarakat umum",
+                    "Menghormati kepercayaan masyarakat penganut Hindu yang memuliakan hewan Sapi",
+                    "Populasi kerbau di Jawa Tengah saat itu jauh lebih melimpah daripada sapi",
+                    "Perintah langsung dari Sultan Kerajaan Demak demi menjaga stabilitas pangan"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 11,
+                type: 'PG',
+                question: "Pendekatan kultural Sunan Kalijaga dalam menyebarkan agama Islam sangat digemari masyarakat luas, salah satunya dengan pertunjukan Wayang Kulit. Sunan Kalijaga menyisipkan nilai Tauhid dalam lakon wayang melalui jimat sakti milik Puntadewa yang bernama...",
+                options: [
+                    "Panah Pasopati",
+                    "Gada Rujakpala",
+                    "Jamus Kalimasada (Kalimat Syahadat)",
+                    "Cakra Baskara"
+                ],
+                answer: 2 // C
+            },
+            {
+                id: 12,
+                type: 'PG',
+                question: "Sunan Giri mendirikan pesantren di Giri Kedaton yang murid-muridnya berasal dari berbagai pelosok Nusantara seperti Maluku, Nusa Tenggara, dan Banjar. Selain pesantren, Sunan Giri juga menciptakan media dakwah anak-anak berupa permainan tradisional...",
+                options: [
+                    "Gundhul-Gundhul Pacul",
+                    "Cublak-Cublak Suweng dan Jamuran",
+                    "Lir-Ilir dan Sluku-Sluku Bathok",
+                    "Padhang Bulan dan Pok Ame-Ame"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 13,
+                type: 'PG',
+                question: "Kerajaan Samudera Pasai yang didirikan oleh Sultan Malik as-Saleh pada abad ke-13 Masehi tumbuh menjadi pusat perdagangan dan pusat studi Islam internasional di kawasan Asia Tenggara. Mata uang emas khas buatan Samudera Pasai dinamakan...",
+                options: [
+                    "Kepeng / Picis",
+                    "Dirham Pasai",
+                    "Dinar Real",
+                    "Rupiah Emas"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 14,
+                type: 'PG',
+                question: "Kerajaan Aceh Darussalam mencapai puncak kejayaan dan keemasan pada masa pemerintahan Sultan Iskandar Muda (1607–1636 M). Pada masa ini, Aceh dijuluki sebagai 'Serambi Makkah' karena...",
+                options: [
+                    "Seluruh penduduk Aceh diwajibkan menunaikan ibadah haji setiap tahun",
+                    "Pusat persinggahan jemaah haji seluruh Nusantara dan penerapan hukum Islam yang kuat",
+                    "Letak geografis wilayah Aceh yang persis berhadapan dengan kota Makkah",
+                    "Aceh dipimpin langsung oleh keturunan raja-raja dari Makkah"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 15,
+                type: 'PG',
+                question: "Kerajaan Demak merupakan kerajaan Islam pertama di Pulau Jawa yang didirikan oleh Raden Patah atas restu dan bimbingan Walisongo. Masjid Agung Demak yang menjadi simbol persatuan para wali memiliki ciri khas arsitektur unik berupa...",
+                options: [
+                    "Kubah gaya Timur Tengah dari tembaga emas",
+                    "Atap tumpang bertingkat tiga yang mencerminkan Aqidah, Syariah, dan Ihsan",
+                    "Menara tinggi dengan gaya arsitektur Yunani Kuno",
+                    "Dinding porselen yang didatangkan langsung dari Eropa"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 16,
+                type: 'PG',
+                question: "Sultan Ageng Tirtayasa adalah penguasa Kesultanan Banten yang gigih melawan monopoli perdagangan kongsi dagang Belanda (VOC). Strategi VOC yang akhirnya berhasil meruntuhkan Kesultanan Banten adalah...",
+                options: [
+                    "Politik adu domba (Devide et Impera) antara Sultan Ageng Tirtayasa dan putranya Sultan Haji",
+                    "Serangan militer besar-besaran armada laut dari Batavia",
+                    "Pemblokadean jalur lalu lintas perdagangan pelabuhan Sunda Kelapa",
+                    "Penyebaran wabah penyakit di dalam benteng kerajaan Banten"
+                ],
+                answer: 0 // A
+            },
+            {
+                id: 17,
+                type: 'PG',
+                question: "Sultan Agung Hanyokrokusumo merupakan raja terbesar Kesultanan Mataram Islam. Salah satu karya monumental beliau dalam merukunkan budaya Jawa dan nilai-nilai Islam adalah...",
+                options: [
+                    "Menerbitkan kitab Undang-Undang Laut Pasai",
+                    "Pembaruan Kalender Jawa yang memadukan Tahun Saka dengan Kalender Hijriah",
+                    "Pembangunan Benteng Fort de Kock di Yogyakarta",
+                    "Penerjemahan Al-Qur'an ke dalam bahasa Sunda Kuno"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 18,
+                type: 'PG',
+                question: "Raja Kerajaan Gowa-Tallo di Sulawesi Selatan yang dijuluki oleh Belanda sebagai 'Ayam Jantan dari Timur' (De Haantjes van Het Oosten) karena keberaniannya menentang monopoli VOC adalah...",
+                options: [
+                    "Sultan Alauddin",
+                    "Sultan Hasanuddin",
+                    "Karaeng Matoaya",
+                    "Arung Palakka"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 19,
+                type: 'PG',
+                question: "Perjanjian Bongaya tahun 1667 Masehi antara Kesultanan Makassar dan VOC mengakibatkan dampak politik yang sangat merugikan bagi Kerajaan Makassar, yaitu...",
+                options: [
+                    "Sultan Hasanuddin diangkat menjadi Gubernur Jenderal VOC",
+                    "Makassar kehilangan kedaulatan perdagangan dan VOC menguasai perairan Maluku-Sulawesi",
+                    "Kerajaan Gowa-Tallo dibubarkan dan diganti menjadi provinsi Belanda",
+                    "Seluruh rakyat Makassar diwajibkan berpindah agama"
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 20,
+                type: 'PG',
+                question: "Kesultanan Ternate dan Tidore di Kepulauan Maluku dikenal sebagai daerah penghasil rempah-rempah utama dunia (Spices Islands). Sultan Ternate yang berhasil mengusir penjajah Portugis setelah peristiwa pembunuhan Sultan Khairun adalah...",
+                options: [
+                    "Sultan Baabullah",
+                    "Sultan Nuku",
+                    "Sultan Zainal Abidin",
+                    "Sultan Mahmud Syah"
+                ],
+                answer: 0 // A
+            },
+
+            // --- SECTION 2: 10 PILIHAN GANDA KOMPLEKS (21 - 30) (Jawaban Benar Lebih Dari 1) ---
+            {
+                id: 21,
+                type: 'PGK',
+                question: "Pilihlah BUKTI-BUKTI SEJARAH yang mendukung Teori Makkah (Arab) mengenai proses awal masuk dan berkembangnya agama Islam di Nusantara! (Pilih lebih dari satu)",
+                options: [
+                    "Adanya permukiman pemeluk Islam Arab di Barus (Sumatra) pada abad ke-7 Masehi",
+                    "Persamaan Mazhab Syafi'i antara masyarakat Nusantara dengan penduduk Makkah/Mesir",
+                    "Gelar raja-raja Kerajaan Samudera Pasai yang menggunakan gelar 'Al-Malik'",
+                    "Peringatan upacara Tabuik 10 Muharram di pesisir Minangkabau"
+                ],
+                correctAnswers: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 22,
+                type: 'PGK',
+                question: "Walisongo mengunakan berbagai macam saluran akulturasi budaya dalam menyampaikan ajaran Islam agar mudah diterima masyarakat Jawa. Manakah di antara media dakwah berikut yang diciptakan atau dipelopori oleh Sunan Kalijaga? (Pilih lebih dari satu)",
+                options: [
+                    "Seni Pertunjukan Wayang Kulit dengan lakon Jamus Kalimasada",
+                    "Tembang Macapat Sinom dan Kinanthi",
+                    "Gamelan Sekaten yang dibunyikan saat peringatan Maulid Nabi",
+                    "Tembang Macapat Dhandhanggula dan Lir-Ilir"
+                ],
+                correctAnswers: [0, 2, 3] // A, C, D
+            },
+            {
+                id: 23,
+                type: 'PGK',
+                question: "Sunan Kudus (Ja'far Shadiq) terkenal sebagai Wali Al-Ilmi yang menguasai ilmu fiqih dan toleransi beragama. Manakah bentuk akulturasi budaya yang dapat kita saksikan pada arsitektur Masjid Menara Kudus? (Pilih lebih dari satu)",
+                options: [
+                    "Menara masjid yang berbentuk mirip Candi Hindu/Kala Kuno",
+                    "Pancuran tempat wudhu bermotif kepala Arca Kaki Kebo (Arca Hindu-Buddha)",
+                    "Atap masjid berupa kubah besar berkilau bergaya Persia",
+                    "Gerbang Kuluk/Gapura Paduraksa di kompleks makam dan masjid"
+                ],
+                correctAnswers: [0, 1, 3] // A, B, D
+            },
+            {
+                id: 24,
+                type: 'PGK',
+                question: "Kerajaan Samudera Pasai merupakan kerajaan Islam pertama di Sumatra. Manakah fakta-fakta sejarah yang BENAR mengenai Kesultanan Samudera Pasai? (Pilih lebih dari satu)",
+                options: [
+                    "Pendiri pertama kerajaan ini bernama Marah Silu yang bergelar Sultan Malik as-Saleh",
+                    "Pernah dikunjungi oleh pengembara dunia terkenal Marco Polo dan Ibn Battuta",
+                    "Menggunakan mata uang emas bernama Dirham sebagai alat pembayaran resmi",
+                    "Mencapai puncak kejayaan pada masa pemerintahan Sultan Ageng Tirtayasa"
+                ],
+                correctAnswers: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 25,
+                type: 'PGK',
+                question: "Kerajaan Aceh Darussalam melahirkan banyak ulama besar dan pujangga ternama Asia Tenggara pada abad ke-16 dan 17 Masehi. Siapa sajakah tokoh ulama terkemuka dari Kerajaan Aceh berikut ini? (Pilih lebih dari satu)",
+                options: [
+                    "Syekh Hamzah Fansuri",
+                    "Syekh Nuruddin ar-Raniri",
+                    "Syekh Abdurauf as-Singkili",
+                    "Syekh Nawawi al-Bantani"
+                ],
+                correctAnswers: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 26,
+                type: 'PGK',
+                question: "Sultan Agung Hanyokrokusumo merupakan raja Mataram Islam yang sangat gigih membendung penjajahan asing. Manakah karya, prestasi, dan tindakan monumental dari Sultan Agung Mataram? (Pilih lebih dari satu)",
+                options: [
+                    "Melakukan penyerangan militer sebanyak dua kali ke markas VOC di Batavia (1628 & 1629)",
+                    "Menyusun kalender Jawa-Islam (memadukan Saka dan Hijriah)",
+                    "Menciptakan karya sastra sufistik Kitab Sastra Gendhing",
+                    "Menandatangani Perjanjian Gianti yang membagi Mataram menjadi dua"
+                ],
+                correctAnswers: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 27,
+                type: 'PGK',
+                question: "Kerajaan Demak memiliki peranan yang sangat penting dalam mengislamkan wilayah Pulau Jawa. Manakah faktor-faktor pendorong pesatnya kemajuan Kesultanan Demak? (Pilih lebih dari satu)",
+                options: [
+                    "Letak geografis yang strategis di jalur perdagangan muara sungai utara Jawa",
+                    "Runtuhnya Kerajaan Majapahit yang melemahkan pengaruh kerajaan Hindu-Buddha",
+                    "Dukungan penuh dari para Wali/Walisongo di Jawa",
+                    "Bantuan modal perang penuh dari VOC Belanda"
+                ],
+                correctAnswers: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 28,
+                type: 'PGK',
+                question: "Walisongo yang bertugas melakukan penyebaran Islam di wilayah pesisir Jawa Timur meliputi tokoh-tokoh berikut ini. Siapakah beliau? (Pilih lebih dari satu)",
+                options: [
+                    "Sunan Giri (Raden Paku)",
+                    "Sunan Ampel (Raden Rahmat)",
+                    "Sunan Drajat (Raden Qasim)",
+                    "Sunan Gunung Jati (Syarif Hidayatullah)"
+                ],
+                correctAnswers: [0, 1, 2] // A, B, C (Sunan Gunung Jati di Jawa Barat)
+            },
+            {
+                id: 29,
+                type: 'PGK',
+                question: "Penyebaran Islam di Indonesia berlangsung secara damai tanpa melalui ekspansi militer atau kekerasan. Manakah yang merupakan saluran utama proses Islamisasi di Nusantara? (Pilih lebih dari satu)",
+                options: [
+                    "Saluran Perdagangan Internasional",
+                    "Saluran Perkawinan antar Pedagang dan Bangsawan Lokal",
+                    "Saluran Pendidikan melalui Pesantren/Pondok",
+                    "Saluran Kolonisasi Paksa dan Perang Agama"
+                ],
+                correctAnswers: [0, 1, 2] // A, B, C
+            },
+            {
+                id: 30,
+                type: 'PGK',
+                question: "Kesultanan Ternate dan Tidore di Maluku pernah membentuk persekutuan wilayah dagang rempah-rempah. Manakah persekutuan dagang tradisional yang ada di Maluku tersebut? (Pilih lebih dari satu)",
+                options: [
+                    "Uli Lima (Persekutuan Lima Negeri dipimpin Ternate)",
+                    "Uli Siwa (Persekutuan Sembilan Negeri dipimpin Tidore)",
+                    "Serikat Islam Maluku",
+                    "Persekutuan Pati Unus"
+                ],
+                correctAnswers: [0, 1] // A, B
+            },
+
+            // --- SECTION 3: 10 MENJODOHKAN (31 - 40) ---
+            {
+                id: 31,
+                type: 'MATCH',
+                question: "Jodohkanlah Tokoh Walisongo berikut ini dengan Karya / Media Dakwah Khas yang diciptakannya dengan tepat!",
+                leftItems: [
+                    "1. Sunan Kalijaga",
+                    "2. Sunan Giri",
+                    "3. Sunan Bonang",
+                    "4. Sunan Ampel"
+                ],
+                rightItems: [
+                    "A. Falsafah Moral Molimo",
+                    "B. Tembang Durma & Suluk Wijil",
+                    "C. Wayang Kulit & Tembang Dhandhanggula",
+                    "D. Permainan Cublak-Cublak Suweng"
+                ],
+                // Correct mapping: 0->C (Wayang), 1->D (Cublak), 2->B (Durma), 3->A (Molimo)
+                correctPairing: {0: 2, 1: 3, 2: 1, 3: 0}
+            },
+            {
+                id: 32,
+                type: 'MATCH',
+                question: "Jodohkanlah Tokoh Walisongo dengan Nama Asli / Nama Kecilnya!",
+                leftItems: [
+                    "1. Sunan Kalijaga",
+                    "2. Sunan Drajat",
+                    "3. Sunan Muria",
+                    "4. Sunan Gunung Jati"
+                ],
+                rightItems: [
+                    "A. Raden Umar Said",
+                    "B. Syarif Hidayatullah",
+                    "C. Raden Said",
+                    "D. Raden Qasim"
+                ],
+                // 0->C, 1->D, 2->A, 3->B
+                correctPairing: {0: 2, 1: 3, 2: 0, 3: 1}
+            },
+            {
+                id: 33,
+                type: 'MATCH',
+                question: "Jodohkan Teori Masuknya Islam di Indonesia berikut dengan Tokoh Pengusul / Pendukung Utamanya!",
+                leftItems: [
+                    "1. Teori Makkah (Arab)",
+                    "2. Teori Gujarat (India)",
+                    "3. Teori Persia (Iran)",
+                    "4. Teori Cina"
+                ],
+                rightItems: [
+                    "A. Hoesein Djajadiningrat",
+                    "B. Prof. Dr. Buya Hamka",
+                    "C. Prof. Slamet Muljana & Sumanto Al Qurtuby",
+                    "D. Snouck Hurgronje & Pijnappel"
+                ],
+                // 0->B, 1->D, 2->A, 3->C
+                correctPairing: {0: 1, 1: 3, 2: 0, 3: 2}
+            },
+            {
+                id: 34,
+                type: 'MATCH',
+                question: "Jodohkan Kerajaan Islam di Indonesia dengan Raja / Sultan Pendiri Pertamanya!",
+                leftItems: [
+                    "1. Kerajaan Demak",
+                    "2. Samudera Pasai",
+                    "3. Kesultanan Banten",
+                    "4. Kerajaan Aceh Darussalam"
+                ],
+                rightItems: [
+                    "A. Sultan Ali Mughayat Syah",
+                    "B. Sultan Hasanuddin (Fatahillah)",
+                    "C. Raden Patah",
+                    "D. Marah Silu (Sultan Malik as-Saleh)"
+                ],
+                // 0->C, 1->D, 2->B, 3->A
+                correctPairing: {0: 2, 1: 3, 2: 1, 3: 0}
+            },
+            {
+                id: 35,
+                type: 'MATCH',
+                question: "Jodohkan Kerajaan Islam berikut dengan Puncak Kejayaan Pemimpin Terbesarnya!",
+                leftItems: [
+                    "1. Aceh Darussalam",
+                    "2. Mataram Islam",
+                    "3. Gowa-Tallo (Makassar)",
+                    "4. Ternate"
+                ],
+                rightItems: [
+                    "A. Sultan Hasanuddin",
+                    "B. Sultan Baabullah",
+                    "C. Sultan Iskandar Muda",
+                    "D. Sultan Agung Hanyokrokusumo"
+                ],
+                // 0->C, 1->D, 2->A, 3->B
+                correctPairing: {0: 2, 1: 3, 2: 0, 3: 1}
+            },
+            {
+                id: 36,
+                type: 'MATCH',
+                question: "Jodohkanlah Istilah / Artefak Peninggalan Islam dengan Kerajaan Pemiliknya!",
+                leftItems: [
+                    "1. Saka Tatal & Menara Tumpang",
+                    "2. Uli Lima & Uli Siwa",
+                    "3. Kitab Bustanussalatin",
+                    "4. Kalender Jawa (Saka-Hijriah)"
+                ],
+                rightItems: [
+                    "A. Mataram Islam",
+                    "B. Kerajaan Aceh Darussalam",
+                    "C. Kerajaan Demak",
+                    "D. Kesultanan Ternate & Tidore"
+                ],
+                // 0->C, 1->D, 2->B, 3->A
+                correctPairing: {0: 2, 1: 3, 2: 1, 3: 0}
+            },
+            {
+                id: 37,
+                type: 'MATCH',
+                question: "Jodohkan Nama Walisongo dengan Wilayah Utama Pusat Pangkalan Dakwahnya!",
+                leftItems: [
+                    "1. Sunan Kudus",
+                    "2. Sunan Giri",
+                    "3. Sunan Gunung Jati",
+                    "4. Sunan Muria"
+                ],
+                rightItems: [
+                    "A. Cirebon dan Banten",
+                    "B. Lereng Gunung Colo (Kudus)",
+                    "C. Menara Tajug / Kota Kudus",
+                    "D. Giri Kedaton (Gresik)"
+                ],
+                // 0->C, 1->D, 2->A, 3->B
+                correctPairing: {0: 2, 1: 3, 2: 0, 3: 1}
+            },
+            {
+                id: 38,
+                type: 'MATCH',
+                question: "Jodohkan Tokoh Ulama Penyebar Islam Nusantara dengan Karya Kitab Terkenalnya!",
+                leftItems: [
+                    "1. Hamzah Fansuri",
+                    "2. Nuruddin ar-Raniri",
+                    "3. Sunan Bonang",
+                    "4. Sultan Agung"
+                ],
+                rightItems: [
+                    "A. Kitab Sastra Gendhing",
+                    "B. Suluk Wijil",
+                    "C. Syair Perahu & Asrar al-Arifin",
+                    "D. Kitab Bustan al-Salatin"
+                ],
+                // 0->C, 1->D, 2->B, 3->A
+                correctPairing: {0: 2, 1: 3, 2: 1, 3: 0}
+            },
+            {
+                id: 39,
+                type: 'MATCH',
+                question: "Jodohkan Bentuk Akulturasi Seni / Budaya dengan Makna Nilai Islam di Dalamnya!",
+                leftItems: [
+                    "1. Gunungan Wayang",
+                    "2. Atap Tumpang Tiga",
+                    "3. Upacara Sekaten",
+                    "4. Tradisi Nyepi Sapi Sunan Kudus"
+                ],
+                rightItems: [
+                    "A. Nilai Toleransi Antar Umat Beragama",
+                    "B. Kalimat Syahadatain (Peringatan Maulid Nabi)",
+                    "C. Simbol Kayu Hayat / Keesaan Allah SWT",
+                    "D. Simbol Iman, Islam, dan Ihsan"
+                ],
+                // 0->C, 1->D, 2->B, 3->A
+                correctPairing: {0: 2, 1: 3, 2: 1, 3: 0}
+            },
+            {
+                id: 40,
+                type: 'MATCH',
+                question: "Jodohkanlah Nama Perjanjian atau Peristiwa Sejarah dengan Kerajaan Islam yang Terlibat!",
+                leftItems: [
+                    "1. Perjanjian Bongaya (1667)",
+                    "2. Perang Banten vs VOC (1682)",
+                    "3. Pembunuhan Sultan Khairun (1570)",
+                    "4. Serangan Batavia (1628-1629)"
+                ],
+                rightItems: [
+                    "A. Mataram Islam melawan VOC",
+                    "B. Kesultanan Ternate melawan Portugis",
+                    "C. Kesultanan Makassar (Gowa-Tallo) vs VOC",
+                    "D. Kesultanan Banten (Sultan Ageng Tirtayasa)"
+                ],
+                // 0->C, 1->D, 2->B, 3->A
+                correctPairing: {0: 2, 1: 3, 2: 1, 3: 0}
+            }
+        ];
+
+        // Global Application State Variables
+        let appState = {
+            adminPassword: 'admin123',
+            logoUrl: 'https://placehold.co/100x100/166534/ffffff?text=MA+NU',
+            questions: [...DEFAULT_QUESTIONS],
+            scores: [], // Store completed exams
+            attempts: {}, // Track attempts by username/presensi
+            currentUser: null, // { role: 'siswa'|'admin', name, kelas, presensi, isAdminSimulator: boolean }
+            currentExam: {
+                questionIndex: 0,
+                userAnswers: {}, // { qId: answerValue }
+                flagged: {}, // { qId: boolean }
+                timerSeconds: 90 * 60, // 90 minutes = 5400s
+                timerInterval: null,
+                startTime: null
+            }
+        };
+
+        // Initialize App on DOM Load
+        window.onload = function() {
+            loadStateFromStorage();
+            updateLogoDisplay();
+            switchAuthTab('siswa');
+        };
+
+        function loadStateFromStorage() {
+            try {
+                const savedQuestions = localStorage.getItem('ski_app_questions');
+                if (savedQuestions) appState.questions = JSON.parse(savedQuestions);
+
+                const savedPass = localStorage.getItem('ski_app_admin_pass');
+                if (savedPass) appState.adminPassword = savedPass;
+
+                const savedLogo = localStorage.getItem('ski_app_logo');
+                if (savedLogo) appState.logoUrl = savedLogo;
+
+                const savedScores = localStorage.getItem('ski_app_scores');
+                if (savedScores) appState.scores = JSON.parse(savedScores);
+
+                const savedAttempts = localStorage.getItem('ski_app_attempts');
+                if (savedAttempts) appState.attempts = JSON.parse(savedAttempts);
+            } catch (e) {
+                console.error("Error loading local storage", e);
+            }
+        }
+
+        function saveStateToStorage() {
+            try {
+                localStorage.setItem('ski_app_questions', JSON.stringify(appState.questions));
+                localStorage.setItem('ski_app_admin_pass', appState.adminPassword);
+                localStorage.setItem('ski_app_logo', appState.logoUrl);
+                localStorage.setItem('ski_app_scores', JSON.stringify(appState.scores));
+                localStorage.setItem('ski_app_attempts', JSON.stringify(appState.attempts));
+            } catch (e) {
+                console.error("Error saving to local storage", e);
+            }
+        }
+
+        function updateLogoDisplay() {
+            const logoEl = document.getElementById('app-logo');
+            const cardLogo = document.getElementById('login-card-logo');
+            const resultLogo = document.getElementById('result-card-logo');
+            
+            if (logoEl) logoEl.src = appState.logoUrl;
+            if (cardLogo) cardLogo.src = appState.logoUrl;
+            if (resultLogo) resultLogo.src = appState.logoUrl;
+        }
+
+        function switchAuthTab(type) {
+            const btnSiswa = document.getElementById('tab-btn-siswa');
+            const btnAdmin = document.getElementById('tab-btn-admin');
+            const formSiswa = document.getElementById('form-login-siswa');
+            const formAdmin = document.getElementById('form-login-admin');
+
+            if (type === 'siswa') {
+                btnSiswa.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-nu-700 text-nu-800 bg-white transition";
+                btnAdmin.className = "flex-1 py-3 text-center text-sm font-bold text-slate-500 hover:text-slate-700 transition";
+                formSiswa.classList.remove('hidden');
+                formAdmin.classList.add('hidden');
+            } else {
+                btnAdmin.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-slate-900 text-slate-900 bg-white transition";
+                btnSiswa.className = "flex-1 py-3 text-center text-sm font-bold text-slate-500 hover:text-slate-700 transition";
+                formAdmin.classList.remove('hidden');
+                formSiswa.classList.add('hidden');
+            }
+        }
+
+        function handleSiswaLogin(e) {
+            e.preventDefault();
+            const name = document.getElementById('siswa-nama').value.trim();
+            const kelas = document.getElementById('siswa-kelas').value;
+            const presensi = document.getElementById('siswa-presensi').value.trim();
+
+            if (!name || !kelas || !presensi) {
+                showToast("Harap isi semua data identitas siswa!", "error");
+                return;
+            }
+
+            const attemptKey = `${name.toLowerCase()}_${presensi}`;
+            const currentCount = appState.attempts[attemptKey] || 0;
+
+            if (currentCount >= 2) {
+                showToast("Anda telah mencapai batas maksimal 2 kali kesempatan tes!", "error");
+                return;
+            }
+
+            appState.currentUser = {
+                role: 'siswa',
+                name: name,
+                kelas: kelas,
+                presensi: presensi,
+                attemptKey: attemptKey,
+                attemptNumber: currentCount + 1,
+                isAdminSimulator: false
+            };
+
+            showView('view-student-intro');
+            updateStudentIntroUI();
+            updateUserBadge();
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('admin-user').value.trim();
+            const p = document.getElementById('admin-pass').value;
+
+            if (u === 'admin' && p === appState.adminPassword) {
+                appState.currentUser = {
+                    role: 'admin',
+                    name: 'Administrator Guru (Lilik Maziyah, S.Ag.)'
+                };
+                showToast("Berhasil login sebagai Admin Guru", "success");
+                showView('view-admin');
+                renderAdminQuestionList();
+                renderAdminScoresTable();
+                updateUserBadge();
+            } else {
+                showToast("Username atau Password Admin salah!", "error");
+            }
+        }
+
+        function logout() {
+            if (appState.currentExam.timerInterval) {
+                clearInterval(appState.currentExam.timerInterval);
+            }
+            appState.currentUser = null;
+            showView('view-auth');
+            updateUserBadge();
+            showToast("Berhasil keluar dari sistem", "info");
+        }
+
+        function updateUserBadge() {
+            const badge = document.getElementById('user-badge');
+            const badgeName = document.getElementById('user-badge-name');
+            const btnLogout = document.getElementById('btn-logout');
+
+            if (appState.currentUser) {
+                badge.classList.remove('hidden');
+                badgeName.textContent = appState.currentUser.name;
+                btnLogout.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+                btnLogout.classList.add('hidden');
+            }
+        }
+
+        function showView(viewId) {
+            const views = ['view-auth', 'view-student-intro', 'view-exam', 'view-result', 'view-admin'];
+            views.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === viewId) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStudentIntroUI() {
+            const u = appState.currentUser;
+            document.getElementById('intro-student-name').textContent = u.name;
+            document.getElementById('intro-student-info').textContent = `Kelas: ${u.kelas} | No. Presensi: ${u.presensi}`;
+            
+            const count = appState.attempts[u.attemptKey] || 0;
+            const remaining = 2 - count;
+            document.getElementById('intro-attempts-badge').textContent = `${remaining} / 2 Tersisa`;
+
+            const btnStart = document.getElementById('btn-start-exam');
+            if (remaining <= 0 && !u.isAdminSimulator) {
+                btnStart.disabled = true;
+                btnStart.className = "w-full sm:w-auto px-8 py-3 bg-slate-400 text-white font-extrabold rounded-xl cursor-not-allowed";
+                btnStart.innerHTML = `<span>Kesempatan Habis</span>`;
+            } else {
+                btnStart.disabled = false;
+                btnStart.className = "w-full sm:w-auto px-8 py-3 bg-nu-700 hover:bg-nu-800 text-white font-extrabold rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center space-x-2";
+                btnStart.innerHTML = `<i class="fa-solid fa-pen-nib"></i><span>Mulai Mengerjakan Asesmen (Percobaan Ke-${count + 1})</span>`;
+            }
+        }
+
+        function startExam() {
+            appState.currentExam = {
+                questionIndex: 0,
+                userAnswers: {},
+                flagged: {},
+                timerSeconds: 90 * 60, // 90 mins
+                timerInterval: null,
+                startTime: new Date()
+            };
+
+            showView('view-exam');
+            renderQuestionGrid();
+            renderCurrentQuestion();
+            startTimer();
+        }
+
+        function startAdminTestExam() {
+            appState.currentUser = {
+                role: 'admin',
+                name: 'Uji Coba Admin (Lilik Maziyah)',
+                kelas: '12 MA',
+                presensi: '99',
+                attemptKey: 'admin_test',
+                attemptNumber: 1,
+                isAdminSimulator: true
+            };
+            startExam();
+            showToast("Mode Uji Coba Soal Aktif (Nilai tidak akan disimpan di rekap siswa)", "info");
+        }
+
+        function startTimer() {
+            if (appState.currentExam.timerInterval) clearInterval(appState.currentExam.timerInterval);
+
+            const timerDisplay = document.getElementById('exam-timer');
+            
+            appState.currentExam.timerInterval = setInterval(() => {
+                appState.currentExam.timerSeconds--;
+
+                const mins = Math.floor(appState.currentExam.timerSeconds / 60);
+                const secs = appState.currentExam.timerSeconds % 60;
+                
+                timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+                if (appState.currentExam.timerSeconds <= 300) { // 5 mins left
+                    timerDisplay.classList.add('text-rose-400', 'animate-pulse');
+                }
+
+                if (appState.currentExam.timerSeconds <= 0) {
+                    clearInterval(appState.currentExam.timerInterval);
+                    showToast("Waktu Ujian Telah Habis! Sistem mengirim jawaban secara otomatis.", "warning");
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+
+            appState.questions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.id = `q-grid-btn-${idx}`;
+                btn.type = 'button';
+                btn.onclick = () => jumpToQuestion(idx);
+
+                const isAnswered = isQuestionAnswered(q.id);
+                const isFlagged = appState.currentExam.flagged[q.id];
+                const isCurrent = appState.currentExam.questionIndex === idx;
+
+                let bgClass = "bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300";
+                if (isAnswered) bgClass = "bg-nu-600 text-white font-bold border-nu-700";
+                if (isFlagged) bgClass = "bg-amber-400 text-slate-900 font-bold border-amber-500";
+                if (isCurrent) bgClass += " ring-2 ring-slate-900 ring-offset-1 font-black";
+
+                btn.className = `w-full h-9 rounded-lg text-xs flex items-center justify-center transition border ${bgClass}`;
+                btn.textContent = idx + 1;
+                grid.appendChild(btn);
+            });
+
+            updateAnsweredCountBadge();
+        }
+
+        function updateAnsweredCountBadge() {
+            let count = 0;
+            appState.questions.forEach(q => {
+                if (isQuestionAnswered(q.id)) count++;
+            });
+            document.getElementById('answered-count-badge').textContent = `${count}/${appState.questions.length} Dijawab`;
+        }
+
+        function isQuestionAnswered(qId) {
+            const ans = appState.currentExam.userAnswers[qId];
+            if (ans === undefined || ans === null) return false;
+            if (Array.isArray(ans)) return ans.length > 0;
+            if (typeof ans === 'object') return Object.keys(ans).length > 0;
+            return true;
+        }
+
+        function jumpToQuestion(index) {
+            appState.currentExam.questionIndex = index;
+            renderCurrentQuestion();
+            renderQuestionGrid();
+        }
+
+        function navigateQuestion(direction) {
+            const newIndex = appState.currentExam.questionIndex + direction;
+            if (newIndex >= 0 && newIndex < appState.questions.length) {
+                jumpToQuestion(newIndex);
+            }
+        }
+
+        function renderCurrentQuestion() {
+            const idx = appState.currentExam.questionIndex;
+            const q = appState.questions[idx];
+            const container = document.getElementById('question-container');
+
+            document.getElementById('exam-q-number').textContent = idx + 1;
+            
+            // Set type badge
+            const badge = document.getElementById('exam-q-type-badge');
+            if (q.type === 'PG') {
+                badge.textContent = "Pilihan Ganda (Pilih 1)";
+                badge.className = "bg-nu-100 text-nu-800 text-xs font-bold px-3 py-1 rounded-full uppercase";
+            } else if (q.type === 'PGK') {
+                badge.textContent = "PG Kompleks (Jawaban > 1)";
+                badge.className = "bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase";
+            } else {
+                badge.textContent = "Menjodohkan Pasangan";
+                badge.className = "bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full uppercase";
+            }
+
+            // Flag state
+            const isFlagged = appState.currentExam.flagged[q.id];
+            const flagBtn = document.getElementById('btn-flag-q');
+            if (isFlagged) {
+                flagBtn.className = "px-4 py-2.5 bg-amber-500 text-slate-900 font-bold rounded-lg text-sm transition flex items-center space-x-1.5 shadow";
+                document.getElementById('flag-text').textContent = "Ragu-Ragu (Aktif)";
+            } else {
+                flagBtn.className = "px-4 py-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 font-semibold rounded-lg text-sm transition flex items-center space-x-1.5";
+                document.getElementById('flag-text').textContent = "Ragu-Ragu";
+            }
+
+            // Build html for Question Content
+            let html = `
+                <div class="text-slate-800 text-base leading-relaxed font-medium bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    ${q.question}
+                </div>
+            `;
+
+            // Type 1: Standard PG
+            if (q.type === 'PG') {
+                const currentAns = appState.currentExam.userAnswers[q.id];
+                html += `<div class="space-y-3 mt-4">`;
+                const labels = ['A', 'B', 'C', 'D'];
+                q.options.forEach((opt, oIdx) => {
+                    const isSelected = currentAns === oIdx;
+                    const borderStyle = isSelected ? "border-nu-600 bg-nu-50/80 ring-2 ring-nu-600" : "border-slate-200 hover:border-slate-300 bg-white";
+                    
+                    html += `
+                        <label onclick="saveAnswerPG(${q.id}, ${oIdx})" class="flex items-center p-3.5 rounded-xl border ${borderStyle} cursor-pointer transition">
+                            <span class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs ${isSelected ? 'bg-nu-700 text-white' : 'bg-slate-100 text-slate-700'} mr-3">
+                                ${labels[oIdx]}
+                            </span>
+                            <span class="text-sm text-slate-700 font-medium">${opt}</span>
+                        </label>
+                    `;
+                });
+                html += `</div>`;
+            } 
+            // Type 2: PG Kompleks
+            else if (q.type === 'PGK') {
+                const currentAnsArr = appState.currentExam.userAnswers[q.id] || [];
+                html += `<p class="text-xs font-bold text-blue-700 mt-2"><i class="fa-solid fa-circle-check mr-1"></i> Centang semua pernyataan atau pilihan yang BENAR di bawah ini:</p>`;
+                html += `<div class="space-y-3 mt-3">`;
+                q.options.forEach((opt, oIdx) => {
+                    const isChecked = currentAnsArr.includes(oIdx);
+                    const borderStyle = isChecked ? "border-blue-600 bg-blue-50/80 ring-2 ring-blue-600" : "border-slate-200 hover:border-slate-300 bg-white";
+
+                    html += `
+                        <label onclick="toggleAnswerPGK(${q.id}, ${oIdx})" class="flex items-start p-3.5 rounded-xl border ${borderStyle} cursor-pointer transition">
+                            <input type="checkbox" ${isChecked ? 'checked' : ''} class="mt-1 w-4 h-4 text-blue-600 rounded focus:ring-blue-500 mr-3">
+                            <span class="text-sm text-slate-700 font-medium">${opt}</span>
+                        </label>
+                    `;
+                });
+                html += `</div>`;
+            }
+            // Type 3: Menjodohkan
+            else if (q.type === 'MATCH') {
+                const currentMatches = appState.currentExam.userAnswers[q.id] || {};
+                html += `<p class="text-xs font-bold text-purple-700 mt-2"><i class="fa-solid fa-link mr-1"></i> Pilihlah Pasangan Jawaban yang Tepat untuk Setiap Pernyataan di Kolom Kiri:</p>`;
+                html += `<div class="space-y-4 mt-4">`;
+                
+                q.leftItems.forEach((leftText, lIdx) => {
+                    const selectedRightIdx = currentMatches[lIdx];
+
+                    html += `
+                        <div class="p-3.5 bg-purple-50/50 rounded-xl border border-purple-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                            <div class="text-sm font-semibold text-slate-800 flex-1">${leftText}</div>
+                            <div class="w-full sm:w-auto">
+                                <select onchange="saveAnswerMatch(${q.id}, ${lIdx}, this.value)" class="w-full sm:w-64 p-2 bg-white border border-purple-300 rounded-lg text-xs font-medium text-purple-900 focus:ring-2 focus:ring-purple-600 outline-none">
+                                    <option value="">-- Pilih Pasangan --</option>
+                                    ${q.rightItems.map((rText, rIdx) => `
+                                        <option value="${rIdx}" ${selectedRightIdx == rIdx ? 'selected' : ''}>${rText}</option>
+                                    `).join('')}
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            container.innerHTML = html;
+
+            // Nav button states
+            document.getElementById('btn-prev-q').disabled = idx === 0;
+            const nextBtn = document.getElementById('btn-next-q');
+            if (idx === appState.questions.length - 1) {
+                nextBtn.innerHTML = `<span>Selesai Ujian</span> <i class="fa-solid fa-check-double"></i>`;
+                nextBtn.onclick = confirmSubmitExam;
+            } else {
+                nextBtn.innerHTML = `<span>Berikutnya</span> <i class="fa-solid fa-chevron-right"></i>`;
+                nextBtn.onclick = () => navigateQuestion(1);
+            }
+        }
+
+        function saveAnswerPG(qId, optionIdx) {
+            appState.currentExam.userAnswers[qId] = optionIdx;
+            renderCurrentQuestion();
+            renderQuestionGrid();
+        }
+
+        function toggleAnswerPGK(qId, optionIdx) {
+            let current = appState.currentExam.userAnswers[qId] || [];
+            if (current.includes(optionIdx)) {
+                current = current.filter(i => i !== optionIdx);
+            } else {
+                current.push(optionIdx);
+            }
+            appState.currentExam.userAnswers[qId] = current;
+            renderCurrentQuestion();
+            renderQuestionGrid();
+        }
+
+        function saveAnswerMatch(qId, leftIdx, rightVal) {
+            let current = appState.currentExam.userAnswers[qId] || {};
+            if (rightVal === "" || rightVal === null) {
+                delete current[leftIdx];
+            } else {
+                current[leftIdx] = parseInt(rightVal);
+            }
+            appState.currentExam.userAnswers[qId] = current;
+            renderQuestionGrid();
+        }
+
+        function toggleFlagCurrentQuestion() {
+            const q = appState.questions[appState.currentExam.questionIndex];
+            appState.currentExam.flagged[q.id] = !appState.currentExam.flagged[q.id];
+            renderCurrentQuestion();
+            renderQuestionGrid();
+        }
+
+        function confirmSubmitExam() {
+            let unanswered = 0;
+            appState.questions.forEach(q => {
+                if (!isQuestionAnswered(q.id)) unanswered++;
+            });
+
+            let msg = "Apakah Anda yakin ingin menyelesaikan dan mengirim lembar jawaban ini?";
+            if (unanswered > 0) {
+                msg = `Masih terdapat ${unanswered} soal yang BELUM dijawab! Yakin ingin menyelesaikan sekarang?`;
+            }
+
+            if (window.confirm(msg)) {
+                submitExam();
+            }
+        }
+
+        function submitExam() {
+            if (appState.currentExam.timerInterval) {
+                clearInterval(appState.currentExam.timerInterval);
+            }
+
+            // Calculate Score
+            let correctPG = 0;
+            let correctPGK = 0;
+            let correctMatch = 0;
+
+            appState.questions.forEach(q => {
+                const userAns = appState.currentExam.userAnswers[q.id];
+
+                if (q.type === 'PG') {
+                    if (userAns === q.answer) correctPG++;
+                } else if (q.type === 'PGK') {
+                    if (Array.isArray(userAns)) {
+                        const correctSet = new Set(q.correctAnswers);
+                        const userSet = new Set(userAns);
+                        if (correctSet.size === userSet.size && [...correctSet].every(val => userSet.has(val))) {
+                            correctPGK++;
+                        }
+                    }
+                } else if (q.type === 'MATCH') {
+                    if (userAns && typeof userAns === 'object') {
+                        let totalPairs = Object.keys(q.correctPairing).length;
+                        let matchedPairs = 0;
+                        for (let lKey in q.correctPairing) {
+                            if (userAns[lKey] === q.correctPairing[lKey]) {
+                                matchedPairs++;
+                            }
+                        }
+                        if (matchedPairs === totalPairs) {
+                            correctMatch++;
+                        }
+                    }
+                }
+            });
+
+            // Score Weighting:
+            // PG: 20 questions x 2.5 pts = 50 pts
+            // PGK: 10 questions x 2.5 pts = 25 pts
+            // MATCH: 10 questions x 2.5 pts = 25 pts
+            // Total = 100 pts
+            const scorePG = correctPG * 2.5;
+            const scorePGK = correctPGK * 2.5;
+            const scoreMatch = correctMatch * 2.5;
+            const finalScore = Math.round(scorePG + scorePGK + scoreMatch);
+
+            const isPassed = finalScore >= 78;
+            const timeTakenMins = Math.ceil((90 * 60 - appState.currentExam.timerSeconds) / 60);
+
+            const scoreRecord = {
+                id: Date.now(),
+                studentName: appState.currentUser.name,
+                kelas: appState.currentUser.kelas,
+                presensi: appState.currentUser.presensi,
+                attemptNumber: appState.currentUser.attemptNumber,
+                score: finalScore,
+                breakdownPG: `${correctPG}/20`,
+                breakdownPGK: `${correctPGK}/10`,
+                breakdownMatch: `${correctMatch}/10`,
+                isPassed: isPassed,
+                timeTaken: `${timeTakenMins} Menit`,
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            };
+
+            // Save Attempt & Record if not admin simulator
+            if (!appState.currentUser.isAdminSimulator) {
+                appState.attempts[appState.currentUser.attemptKey] = appState.currentUser.attemptNumber;
+                appState.scores.push(scoreRecord);
+                saveStateToStorage();
+            }
+
+            renderStudentResult(scoreRecord);
+            showView('view-result');
+        }
+
+        function renderStudentResult(record) {
+            document.getElementById('result-student-name').textContent = record.studentName;
+            document.getElementById('result-student-kelas').textContent = record.kelas;
+            document.getElementById('result-student-presensi').textContent = record.presensi;
+            document.getElementById('result-time-taken').textContent = record.timeTaken;
+            document.getElementById('result-date').textContent = record.date;
+            document.getElementById('result-final-score').textContent = record.score;
+
+            document.getElementById('breakdown-pg').textContent = `${record.breakdownPG} Benar`;
+            document.getElementById('breakdown-pgk').textContent = `${record.breakdownPGK} Sesuai`;
+            document.getElementById('breakdown-match').textContent = `${record.breakdownMatch} Cocok`;
+
+            const stamp = document.getElementById('result-status-stamp');
+            const note = document.getElementById('result-kkm-note');
+
+            if (record.isPassed) {
+                stamp.className = "inline-block px-3 py-1 rounded font-black text-xs uppercase tracking-wider bg-emerald-100 text-emerald-800 border-emerald-300";
+                stamp.textContent = "LULUS KKM";
+                note.textContent = `Selamat! Nilai Anda (${record.score}) melampaui KKM 78.`;
+                note.className = "text-xs text-emerald-300 mt-2 font-semibold";
+            } else {
+                stamp.className = "inline-block px-3 py-1 rounded font-black text-xs uppercase tracking-wider bg-rose-100 text-rose-800 border-rose-300";
+                stamp.textContent = "BELUM TUNTAS";
+                note.textContent = `Nilai Anda (${record.score}) di bawah KKM 78. Silakan pelajari kembali materi SKI.`;
+                note.className = "text-xs text-rose-300 mt-2 font-semibold";
+            }
+
+            // Retry Button Setup
+            const count = appState.attempts[appState.currentUser.attemptKey] || 0;
+            const btnRetry = document.getElementById('btn-result-retry');
+            document.getElementById('retry-count').textContent = count;
+
+            if (count >= 2 || appState.currentUser.isAdminSimulator) {
+                btnRetry.classList.add('hidden');
+            } else {
+                btnRetry.classList.remove('hidden');
+            }
+        }
+
+        function retryExam() {
+            appState.currentUser.attemptNumber = (appState.attempts[appState.currentUser.attemptKey] || 0) + 1;
+            showView('view-student-intro');
+            updateStudentIntroUI();
+        }
+
+        function switchAdminTab(tab) {
+            const btnQ = document.getElementById('admin-tab-btn-questions');
+            const btnS = document.getElementById('admin-tab-btn-scores');
+            const tabQ = document.getElementById('admin-tab-questions');
+            const tabS = document.getElementById('admin-tab-scores');
+
+            if (tab === 'questions') {
+                btnQ.className = "py-3 px-5 text-sm font-bold border-b-2 border-nu-700 text-nu-800 transition";
+                btnS.className = "py-3 px-5 text-sm font-bold text-slate-500 hover:text-slate-800 transition";
+                tabQ.classList.remove('hidden');
+                tabS.classList.add('hidden');
+            } else {
+                btnS.className = "py-3 px-5 text-sm font-bold border-b-2 border-nu-700 text-nu-800 transition";
+                btnQ.className = "py-3 px-5 text-sm font-bold text-slate-500 hover:text-slate-800 transition";
+                tabS.classList.remove('hidden');
+                tabQ.classList.add('hidden');
+                renderAdminScoresTable();
+            }
+        }
+
+        function renderAdminQuestionList() {
+            const listContainer = document.getElementById('admin-question-list');
+            const filterType = document.getElementById('filter-question-type').value;
+
+            listContainer.innerHTML = '';
+
+            appState.questions.forEach((q, idx) => {
+                if (filterType !== 'ALL' && q.type !== filterType) return;
+
+                const card = document.createElement('div');
+                card.className = "p-4 bg-slate-50 border border-slate-200 rounded-xl hover:border-nu-500 transition space-y-2";
+
+                let typeBadge = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded">Pilihan Ganda</span>`;
+                if (q.type === 'PGK') typeBadge = `<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded">PG Kompleks</span>`;
+                if (q.type === 'MATCH') typeBadge = `<span class="bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded">Menjodohkan</span>`;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-extrabold text-xs text-slate-900 bg-white border border-slate-300 w-6 h-6 rounded flex items-center justify-center">${idx + 1}</span>
+                            ${typeBadge}
+                        </div>
+                        <button onclick="openEditQuestionModal(${q.id})" class="text-xs bg-nu-700 hover:bg-nu-800 text-white font-semibold px-3 py-1 rounded-lg transition shadow">
+                            <i class="fa-solid fa-pen-to-square mr-1"></i> Edit Soal & Kunci
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-800 font-medium line-clamp-2">${q.question}</p>
+                `;
+                listContainer.appendChild(card);
+            });
+        }
+
+        function openEditQuestionModal(qId) {
+            const q = appState.questions.find(item => item.id === qId);
+            if (!q) return;
+
+            document.getElementById('edit-q-id').value = q.id;
+            document.getElementById('edit-q-num').textContent = appState.questions.indexOf(q) + 1;
+            document.getElementById('edit-q-text').value = q.question;
+
+            const optsContainer = document.getElementById('edit-options-container');
+            optsContainer.innerHTML = '';
+
+            if (q.type === 'PG') {
+                const labels = ['A', 'B', 'C', 'D'];
+                q.options.forEach((opt, oIdx) => {
+                    optsContainer.innerHTML += `
+                        <div class="flex items-center space-x-2">
+                            <input type="radio" name="edit-pg-ans" value="${oIdx}" ${q.answer === oIdx ? 'checked' : ''} class="w-4 h-4 text-nu-600">
+                            <span class="font-bold w-4">${labels[oIdx]}.</span>
+                            <input type="text" id="edit-opt-${oIdx}" value="${opt}" required class="flex-1 p-2 border border-slate-300 rounded text-xs">
+                        </div>
+                    `;
+                });
+            } else if (q.type === 'PGK') {
+                q.options.forEach((opt, oIdx) => {
+                    const isChecked = q.correctAnswers.includes(oIdx);
+                    optsContainer.innerHTML += `
+                        <div class="flex items-center space-x-2">
+                            <input type="checkbox" name="edit-pgk-ans" value="${oIdx}" ${isChecked ? 'checked' : ''} class="w-4 h-4 text-blue-600 rounded">
+                            <input type="text" id="edit-opt-${oIdx}" value="${opt}" required class="flex-1 p-2 border border-slate-300 rounded text-xs">
+                        </div>
+                    `;
+                });
+            } else if (q.type === 'MATCH') {
+                q.leftItems.forEach((lText, lIdx) => {
+                    optsContainer.innerHTML += `
+                        <div class="grid grid-cols-2 gap-2 bg-slate-50 p-2 rounded border border-slate-200">
+                            <input type="text" id="edit-left-${lIdx}" value="${lText}" required class="p-1.5 border border-slate-300 rounded text-xs">
+                            <input type="text" id="edit-right-${lIdx}" value="${q.rightItems[lIdx]}" required class="p-1.5 border border-slate-300 rounded text-xs">
+                        </div>
+                    `;
+                });
+            }
+
+            document.getElementById('modal-edit-question').classList.remove('hidden');
+        }
+
+        function closeEditQuestionModal() {
+            document.getElementById('modal-edit-question').classList.add('hidden');
+        }
+
+        function saveQuestionEdit(e) {
+            e.preventDefault();
+            const qId = parseInt(document.getElementById('edit-q-id').value);
+            const q = appState.questions.find(item => item.id === qId);
+            if (!q) return;
+
+            q.question = document.getElementById('edit-q-text').value.trim();
+
+            if (q.type === 'PG') {
+                q.options = [
+                    document.getElementById('edit-opt-0').value.trim(),
+                    document.getElementById('edit-opt-1').value.trim(),
+                    document.getElementById('edit-opt-2').value.trim(),
+                    document.getElementById('edit-opt-3').value.trim()
+                ];
+                const checkedRadio = document.querySelector('input[name="edit-pg-ans"]:checked');
+                q.answer = checkedRadio ? parseInt(checkedRadio.value) : 0;
+            } else if (q.type === 'PGK') {
+                q.options = q.options.map((_, idx) => document.getElementById(`edit-opt-${idx}`).value.trim());
+                const checkedArr = [];
+                document.querySelectorAll('input[name="edit-pgk-ans"]:checked').forEach(cb => {
+                    checkedArr.push(parseInt(cb.value));
+                });
+                q.correctAnswers = checkedArr;
+            } else if (q.type === 'MATCH') {
+                q.leftItems = q.leftItems.map((_, idx) => document.getElementById(`edit-left-${idx}`).value.trim());
+                q.rightItems = q.rightItems.map((_, idx) => document.getElementById(`edit-right-${idx}`).value.trim());
+            }
+
+            saveStateToStorage();
+            closeEditQuestionModal();
+            renderAdminQuestionList();
+            showToast("Soal dan Kunci Jawaban berhasil diperbarui!", "success");
+        }
+
+        function renderAdminScoresTable() {
+            const tbody = document.getElementById('admin-scores-tbody');
+            tbody.innerHTML = '';
+
+            if (appState.scores.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-6 text-center text-slate-400">Belum ada data pengerjaan siswa.</td></tr>`;
+                return;
+            }
+
+            appState.scores.forEach((s, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                
+                const statusBadge = s.isPassed 
+                    ? `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]">LULUS (>=78)</span>`
+                    : `<span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded text-[10px]">TIDAK TUNTAS</span>`;
+
+                tr.innerHTML = `
+                    <td class="p-3 font-bold">${idx + 1}</td>
+                    <td class="p-3 font-semibold text-slate-900">${s.studentName}</td>
+                    <td class="p-3">${s.kelas}</td>
+                    <td class="p-3 font-mono">${s.presensi}</td>
+                    <td class="p-3 text-center">Ke-${s.attemptNumber}</td>
+                    <td class="p-3 font-mono font-bold text-sm text-nu-800">${s.score}</td>
+                    <td class="p-3">${statusBadge}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteScoreRecord(${s.id})" class="text-rose-600 hover:text-rose-800 font-bold text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteScoreRecord(id) {
+            if (confirm("Hapus catatan nilai ini?")) {
+                appState.scores = appState.scores.filter(s => s.id !== id);
+                saveStateToStorage();
+                renderAdminScoresTable();
+                showToast("Rekap nilai berhasil dihapus", "info");
+            }
+        }
+
+        function clearAllScores() {
+            if (confirm("Apakah Anda yakin ingin MENGHAPUS SEMUA rekap nilai siswa?")) {
+                appState.scores = [];
+                appState.attempts = {};
+                saveStateToStorage();
+                renderAdminScoresTable();
+                showToast("Semua data rekap nilai dan kesempatan telah direset!", "warning");
+            }
+        }
+
+        function downloadScoresCSV() {
+            if (appState.scores.length === 0) {
+                showToast("Belum ada data nilai untuk diexport!", "error");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,No,Nama Siswa,Kelas,No Presensi,Percobaan Ke,Nilai Akhir,Status KKM,Waktu,Tanggal\n";
+            appState.scores.forEach((s, idx) => {
+                const row = [
+                    idx + 1,
+                    `"${s.studentName}"`,
+                    `"${s.kelas}"`,
+                    s.presensi,
+                    s.attemptNumber,
+                    s.score,
+                    s.isPassed ? "LULUS" : "TIDAK TUNTAS",
+                    `"${s.timeTaken}"`,
+                    `"${s.date}"`
+                ].join(",");
+                csvContent += row + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Rekap_Nilai_SKI_Kelas12_MA_Muallimin_NU.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function openAdminSettingsModal() {
+            document.getElementById('setting-logo-url').value = appState.logoUrl;
+            document.getElementById('modal-admin-settings').classList.remove('hidden');
+        }
+
+        function closeAdminSettingsModal() {
+            document.getElementById('modal-admin-settings').classList.add('hidden');
+        }
+
+        function saveAdminPassword(e) {
+            e.preventDefault();
+            const newP = document.getElementById('setting-new-pass').value.trim();
+            if (newP.length < 4) {
+                showToast("Password minimal 4 karakter!", "error");
+                return;
+            }
+            appState.adminPassword = newP;
+            saveStateToStorage();
+            document.getElementById('setting-new-pass').value = '';
+            showToast("Password Admin berhasil diperbarui!", "success");
+        }
+
+        function setPresetLogo(preset) {
+            if (preset === 'MA NU') {
+                document.getElementById('setting-logo-url').value = 'https://placehold.co/100x100/166534/ffffff?text=MA+NU';
+            } else if (preset === 'Kemenag') {
+                document.getElementById('setting-logo-url').value = 'https://placehold.co/100x100/0f766e/ffffff?text=KEMENAG';
+            }
+        }
+
+        function saveLogoSetting(e) {
+            e.preventDefault();
+            const url = document.getElementById('setting-logo-url').value.trim();
+            if (!url) return;
+            appState.logoUrl = url;
+            saveStateToStorage();
+            updateLogoDisplay();
+            closeAdminSettingsModal();
+            showToast("Logo Lembaga berhasil diperbarui!", "success");
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            let bg = "bg-slate-800 text-white";
+            let icon = "fa-circle-info";
+
+            if (type === 'success') {
+                bg = "bg-nu-800 text-white border border-emerald-500";
+                icon = "fa-circle-check";
+            } else if (type === 'error') {
+                bg = "bg-rose-800 text-white border border-rose-500";
+                icon = "fa-triangle-exclamation";
+            } else if (type === 'warning') {
+                bg = "bg-amber-600 text-white";
+                icon = "fa-clock";
+            }
+
+            toast.className = `${bg} px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold flex items-center space-x-2 transition transform translate-y-2 duration-200 pointer-events-auto`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i> <span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
